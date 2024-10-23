@@ -1,23 +1,23 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [city, setCity] = useState('');
+  const [response, setResponse] = useState(null);
+
+  const handleSearch = async () => {
+    const url = `http://api.weatherstack.com/current?access_key=d3c1f5b2ebfb059d8a893012d4bb8596&query=${city}`;
+
+    const response = await fetch(url);
+    console.log(response);
+    const jsonFormattedResp = await response.json();
+    setResponse(jsonFormattedResp);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <input onChange={(e) => setCity(e.currentTarget.value)} type='text' />
+      <button onClick={handleSearch}>Search</button>
+      <div className=''>{JSON.stringify(response)}</div>
     </div>
   );
 }
